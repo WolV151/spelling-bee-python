@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package game_logic;
+
+service WordGame {
+    rpc CreateGame (CreateGameRequest) returns (CreateGameResponse) {};
+    rpc RegisterPlayer (RegisterPlayerRequest) returns (RegisterPlayerResponse) {};
+    rpc ShowSelectedWord (ShowSelectedWordRequest) returns (ShowSelectedWordResponce);
+    rpc CheckWord (CheckWordRequest) returns (CheckWordResponse) {};
+    rpc CheckRanking (CheckRankingRequest) returns (CheckRankingResponse) {}; // I was thinking of having a ranking like the original Spelling Bee, but perhaps in the future
+}
+
+message CreateGameRequest {
+    string gameType = 1;
+}
+
+message CreateGameResponse {
+    bytes gameId = 1;
+}
+
+message RegisterPlayerRequest {
+    bytes gameId = 1;
+    string userName = 2;
+}
+
+message RegisterPlayerResponse {
+    string status = 1;
+}
+
+message ShowSelectedWordRequest {
+    bytes gameId = 1;
+}
+
+message ShowSelectedWordResponce {
+    string word = 1;
+}
+
+message CheckWordRequest {
+    enum WordMultiplier{  // I believe the enum is not necessary here
+        DUMMY = 0;
+        PANGRAM_BONUS = 7;
+    }
+    bytes gameId = 1;
+    string word = 2;
+}
+
+message CheckWordResponse {
+    string score = 1;
+    string message = 2;
+}
+
+message CheckRankingRequest {
+    string score = 1;
+}
+
+message CheckRankingResponse {
+    string message = 1;
+}
