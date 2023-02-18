@@ -1,0 +1,90 @@
+syntax = "proto3";
+
+package game_logic;
+
+service WordGame {
+    rpc CreateGame (CreateGameRequest) returns (CreateGameResponse) {};
+    rpc RegisterPlayer (RegisterPlayerRequest) returns (RegisterPlayerResponse) {};
+    rpc ShowSelectedWord (ShowSelectedWordRequest) returns (ShowSelectedWordResponce);
+    rpc CheckWord (CheckWordRequest) returns (CheckWordResponse) {};
+    rpc CheckRanking (CheckRankingRequest) returns (CheckRankingResponse) {}; // I was thinking of having a ranking like the original Spelling Bee, but perhaps in the future
+    rpc StartGame (StartGameRequest) returns (StartGameResponse);
+    rpc GetStatus (GetStatusRequest) returns (GetStatusResponse); // send any of the statuses in the datatype.enum
+    rpc GetPlayerWords (GetPlayerWordsRequest) returns (GetPlayerWordsResponse); // this will get the words the players have accredited to
+}
+
+message CreateGameRequest {
+    string gameType = 1;
+}
+
+message CreateGameResponse {
+    bytes gameId = 1;
+    string gameInvite = 2;
+}
+
+message RegisterPlayerRequest {
+    bytes gameId = 1;
+    string userName = 2;
+}
+
+message RegisterPlayerResponse {
+    string status = 1;
+}
+
+message ShowSelectedWordRequest {
+    bytes gameId = 1;
+}
+
+message ShowSelectedWordResponce {
+    string word = 1;
+}
+
+message CheckWordRequest {
+    enum WordMultiplier{  // I believe the enum is not necessary here
+        DUMMY = 0;
+        PANGRAM_BONUS = 7;
+    }
+    bytes gameId = 1;
+    string word = 2;
+    string username = 3;
+}
+
+message CheckWordResponse {
+    string score = 1;
+    string message = 2;
+    string p1Score = 3;
+    string p2Score = 4;
+}
+
+message CheckRankingRequest {
+    string score = 1;
+}
+
+message CheckRankingResponse {
+    string message = 1;
+}
+
+message StartGameRequest {
+    bytes gameId = 1;
+}
+
+message StartGameResponse {
+    string message = 1;
+}
+
+message GetStatusRequest{
+    bytes gameId = 1;
+}
+
+message GetStatusResponse {
+    string status = 2;
+}
+
+message GetPlayerWordsRequest {
+    bytes gameId = 1;
+}
+
+message GetPlayerWordsResponse {
+    repeated string p1Words = 1;
+    repeated string p2Words = 2;
+}
